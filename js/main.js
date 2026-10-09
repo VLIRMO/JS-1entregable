@@ -1,7 +1,5 @@
-console.log("Calculador de descuentos")
+console.log("Sistema de ventas")
 const nombre = prompt("¡Hola! Ingresa tu nombre para comenzar:")
-let nacimiento = parseInt(prompt("Ingresa año de nacimiento:"))
-let edad = 2026 - nacimiento
 let opcion = prompt("Qué te gustaría hacer? Ingresa 1 para calcular descuento, Ingresa 2 ingresar a caja")
 let cantidadProductos = 0
 let precioPolera = 25000
@@ -32,8 +30,6 @@ if (opcion == 1) {
       alert(nombre + ", el precio con " + descuento + "% de descuento para el producto " + i + " es: " + precioFinal)
       console.log("Datos:")
       console.log(nombre)
-      console.log(nacimiento)
-      console.log(edad + " años")
       console.log("Precio: " + precio)
       console.log("Dcto: " + descuento + "%")
       console.log("Total: " + precioFinal)
@@ -63,6 +59,7 @@ if (opcion == 1) {
   }
 
 if (accesoConcedido == true) {
+  const rutCliente = prompt("Ingresa rut del cliente sin puntos ni guion:")
   cantidadProductos = 0
     while (confirm("Agregar productos?")) {
       codigoProducto = parseInt(prompt("Ingresa el codigo de producto que deseas comprar: (1) Polera, (2) Pantalon, (3) Zapatillas, (4) Lentes)"))
@@ -84,15 +81,17 @@ if (accesoConcedido == true) {
           precio = 0
           alert("Código de producto inválido.")
       }
-      cantidadProductos++
-      total = total + precio
+
+      if (precio > 0) {
+        cantidadProductos++
+        total = total + precio
+        alert("Producto agregado. Subtotal actual: $" + total)
+      }
     }
     alert("Gracias " + nombre + ". El total a pagar es: $" + total)
     
-    console.log("Datos:")
-      console.log(nombre)
-      console.log(nacimiento)
-      console.log(edad + " años")
+    console.log("Datos de cliente:")
+      console.log ( "Rut: " + rutCliente)
       console.log("Productos:" + cantidadProductos)
       console.log("El total a pagar es: " + total)
   }
