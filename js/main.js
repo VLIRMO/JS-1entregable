@@ -2,7 +2,8 @@ console.log("Sistema de ventas");
 
 const nombre = prompt("¡Hola! Ingresa tu nombre para comenzar:");
 
-let opcion = prompt("¿Qué te gustaría hacer? 1 - Calcular descuento 2 - Ingresar a caja");
+let opcion = prompt("¿Qué te gustaría hacer? 1 - Calcular descuento | 2 - Ingresar a caja | 3 gestioar inventario");
+
 
 let precioPolera = 25000;
 let precioPantalon = 40000;
@@ -11,6 +12,58 @@ let precioLentes = 15000;
 const claveSecreta = "js123";
 const intentosMaximos = 3;
 let total = 0;
+
+const productosEnStock = ["Polera", "Pantalón", "Zapatillas", "Lentes", "Gorro"];
+
+function listarStock(lista) {
+
+  console.log("Stock actual:");
+
+  for (const producto of lista) {
+
+    console.log("Producto: " + producto);
+  }
+
+  console.log("Total: " + lista.length + " productos");
+}
+
+
+function gestionarInventario(nombreUsuario) {
+  alert("Hola " + nombreUsuario + ", vamos a gestionar el inventario.");
+
+
+  const nuevo = prompt("Ingresa el producto que quieres agregar al final:");
+  if (nuevo) {
+    productosEnStock.push(nuevo);
+  }
+
+  const destacado = prompt("Ingresa un producto para ponerlo al principio:");
+  if (destacado) {
+    productosEnStock.unshift(destacado);
+  }
+
+  const agotado = productosEnStock.pop();
+  alert("Se agotó el último producto: " + agotado);
+  console.log("Se eliminó del stock: " + agotado);
+
+  const buscado = prompt("¿Qué producto quieres buscar?");
+  if (buscado) {
+    const stockMinusculas = productosEnStock.map(p => p.toLowerCase());
+    const texto = buscado.toLowerCase();
+
+    if (stockMinusculas.includes(texto)) {
+      alert("Sí está en stock, en la posición " + stockMinusculas.indexOf(texto));
+    } else {
+      alert("Ese producto no está en stock.");
+    }
+  }
+
+  listarStock(productosEnStock);
+
+}
+
+
+
 
 function imprimirDescuento(nombreCliente, precio, descuento, precioFinal) {
   console.log("Datos:");
@@ -113,7 +166,7 @@ function registrarVenta(nombreUsuario, pPolera, pPantalon, pZapatillas, pLentes)
 
       case 2:
         precio = pPantalon;
-        
+
         break;
       case 3:
         precio = pZapatillas;
@@ -148,8 +201,14 @@ if (opcion == "1") {
   }
 } else if (opcion == "2") {
   let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombre);
+
   if (acceso) {
     registrarVenta(nombre, precioPolera, precioPantalon, precioZapatillas, precioLentes);
+  }
+} else if (opcion == "3") {
+  let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombre);
+  if (acceso) {
+    gestionarInventario(nombre);
   }
 } else {
   alert("Opción no válida.");
