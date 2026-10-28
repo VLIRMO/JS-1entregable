@@ -29,7 +29,7 @@ function listarStock(lista) {
 
 
 function gestionarInventario(nombreUsuario) {
-  alert("Hola " + nombreUsuario + ", vamos a gestionar el inventario.");
+  alert("ok, " + nombreUsuario + ", vamos a gestionar el inventario.");
 
 
   const nuevo = prompt("Ingresa el producto que quieres agregar al final:");
@@ -56,6 +56,16 @@ function gestionarInventario(nombreUsuario) {
     } else {
       alert("Ese producto no está en stock.");
     }
+  }
+
+  const indice = parseInt(prompt("¿En qué posición quieres reemplazar un producto? (0 a " + (productosEnStock.length - 1) + ")"));
+  if (indice >= 0 && indice < productosEnStock.length) {
+    const reemplazo = prompt("Ingresa el nuevo producto:");
+    if (reemplazo) {
+      productosEnStock.splice(indice, 1, reemplazo);
+    }
+  } else {
+    alert("Posición inválida.");
   }
 
   listarStock(productosEnStock);
