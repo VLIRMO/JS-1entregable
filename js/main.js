@@ -1,79 +1,104 @@
-console.log("Sistema de ventas");
+console.log("Sistema de ventas y gestión de productos de moda");
 
 const nombre = prompt("¡Hola! Ingresa tu nombre para comenzar:");
-
-let opcion = prompt("¿Qué te gustaría hacer? 1 - Calcular descuento | 2 - Ingresar a caja | 3 gestioar inventario");
-
 
 let precioPolera = 25000;
 let precioPantalon = 40000;
 let precioZapatillas = 60000;
 let precioLentes = 15000;
+
 const claveSecreta = "js123";
 const intentosMaximos = 3;
 let total = 0;
 
-const productosEnStock = ["Polera", "Pantalón", "Zapatillas", "Lentes", "Gorro"];
+const productos = ["polera", "pantalón", "zapatillas", "lentes", "sombrero"];
 
-function listarStock(lista) {
+function mostrarListaProductos(productos) {
+  alert("Stock de productos:\n" + productos.join("\n"));
 
-  console.log("Stock actual:");
-
-  for (const producto of lista) {
-
-    console.log("Producto: " + producto);
+  for (const producto of productos) {
+    alert("Producto: " + producto);
   }
-
-  console.log("Total: " + lista.length + " productos");
 }
 
+function gestionarProductos(productos) {
 
-function gestionarInventario(nombreUsuario) {
-  alert("ok, " + nombreUsuario + ", vamos a gestionar el inventario.");
+  const opcionGestion = Number(prompt("¿Qué deseas hacer? | 1 - Agregar producto | 2 - Eliminar producto | 3 - Buscar producto | 4 - ver lista de productos"));
 
+  switch (opcionGestion) {
+    case 1: {
 
-  const nuevo = prompt("Ingresa el producto que quieres agregar al final:");
-  if (nuevo) {
-    productosEnStock.push(nuevo);
-  }
+      const productoAgregado = prompt("Ingresa el nombre del producto que deseas agregar:");
+      if (productoAgregado.trim() == "") {
+        alert("Debes ingresar un nombre de producto.");
+        break;
+      }
+      const ubicacion = Number(prompt("¿Dónde deseas agregarlo? | 1 - Al inicio | 2 - Al final | 3 - En una posición específica"));
+      if (ubicacion == 1) {
 
-  const destacado = prompt("Ingresa un producto para ponerlo al principio:");
-  if (destacado) {
-    productosEnStock.unshift(destacado);
-  }
+        productos.unshift(productoAgregado.trim().toLowerCase());
 
-  const agotado = productosEnStock.pop();
-  alert("Se agotó el último producto: " + agotado);
-  console.log("Se eliminó del stock: " + agotado);
+      } else if (ubicacion == 2) {
+        productos.push(productoAgregado.trim().toLowerCase());
+      }
+      else if (ubicacion == 3) {
 
-  const buscado = prompt("¿Qué producto quieres buscar?");
-  if (buscado) {
-    const stockMinusculas = productosEnStock.map(p => p.toLowerCase());
-    const texto = buscado.toLowerCase();
+        const posicion = Number(prompt("Ingresa la posición (0 a " + productos.length + ") donde deseas agregar el producto:"));
+        const opcionReemplazo = parseInt(prompt("¿Deseas reemplazar el producto existente en esa posición? (1- Sí /2 - NO)"));
 
-    if (stockMinusculas.includes(texto)) {
-      alert("Sí está en stock, en la posición " + stockMinusculas.indexOf(texto));
-    } else {
-      alert("Ese producto no está en stock.");
+        if (posicion >= 0 && posicion <= productos.length && opcionReemplazo === 1) {
+          productos.splice(posicion, 1, productoAgregado.trim().toLowerCase());
+
+        } else if (posicion >= 0 && posicion <= productos.length && opcionReemplazo === 2) {
+          productos.splice(posicion, 0, productoAgregado.trim().toLowerCase());
+
+        } else {
+          alert("Posición inválida. El producto se agregará al final.");
+          productos.push(productoAgregado.trim().toLowerCase());
+        }
+      }
+
+      alert("Producto agregado: " + productoAgregado.trim());
+      alert("Lista de productos actualizada: " + productos.join(", "));
+      break;
     }
+
+    case 2:
+
+      const productoEliminar = prompt("Escribe el producto a eliminar:\n" + productos.join("\n"));
+      const indexEliminar = productos.indexOf(productoEliminar.trim());
+
+      if (indexEliminar !== -1) {
+        productos.splice(indexEliminar, 1);
+        alert("Producto eliminado: " + productoEliminar.trim());
+        alert("Lista de productos actualizada: " + productos.join(", "));
+
+      } else {
+        alert("El producto ingresado no se encuentra en la lista.");
+      }
+
+      break;
+
+    case 3:
+
+      const productoBuscar = prompt("Escribe el producto a buscar:");
+      if (productos.includes(productoBuscar.trim().toLowerCase())) {
+        const posicionBuscar = productos.indexOf(productoBuscar.trim().toLowerCase());
+        alert("El producto '" + productoBuscar.trim() + "' se encuentra en la posición: " + posicionBuscar);
+      } else {
+        alert("El producto ingresado no se encuentra en la lista.");
+      }
+
+      break;
+
+      case 4:
+        mostrarListaProductos(productos);
+        break;
+
+    default:
+      alert("La opción ingresada no es válida.");
   }
-
-  const indice = parseInt(prompt("¿En qué posición quieres reemplazar un producto? (0 a " + (productosEnStock.length - 1) + ")"));
-  if (indice >= 0 && indice < productosEnStock.length) {
-    const reemplazo = prompt("Ingresa el nuevo producto:");
-    if (reemplazo) {
-      productosEnStock.splice(indice, 1, reemplazo);
-    }
-  } else {
-    alert("Posición inválida.");
-  }
-
-  listarStock(productosEnStock);
-
 }
-
-
-
 
 function imprimirDescuento(nombreCliente, precio, descuento, precioFinal) {
   console.log("Datos:");
@@ -89,6 +114,7 @@ function imprimirVenta(rut, cantidad, totalPagar) {
   console.log("Productos: " + cantidad);
   console.log("El total a pagar es: $" + totalPagar);
 }
+
 function autenticarUsuario(claveCorrecta, maxIntentos, nombreUsuario) {
   let intentos = 0;
   let accesoConcedido = false;
@@ -121,13 +147,11 @@ function autenticarUsuario(claveCorrecta, maxIntentos, nombreUsuario) {
 
 
 function calcularDescuento(nombreUsuario) {
+
   let cantidadProductos = parseInt(prompt("¡Perfecto! ¿Cuántos productos deseas calcular?"));
-
-
 
   if (cantidadProductos > 0) {
     for (let i = 1; i <= cantidadProductos; i++) {
-
 
       let precio = Number(prompt("Ingresa el precio del producto " + i + ":"));
 
@@ -141,25 +165,25 @@ function calcularDescuento(nombreUsuario) {
 
       imprimirDescuento(nombreUsuario, precio, descuento, precioFinal);
     }
+
   } else {
+
     alert("Ingresaste una cantidad inválida de productos.");
+
   }
 }
-
 
 const calcularMontoDescuento = (precioOriginal, porcentajeDcto) => {
 
   return (porcentajeDcto / 100) * precioOriginal;
 };
 
-
-function registrarVenta(nombreUsuario, pPolera, pPantalon, pZapatillas, pLentes) {
-
+function registrarVenta(nombreUsuario, precioPolera, precioPantalon, precioZapatillas, precioLentes) {
 
   const rutCliente = prompt("Ingresa RUT del cliente sin puntos ni guión:");
+
   let cantidadProductos = 0;
   let subtotal = 0;
-
 
   while (confirm("¿Agregar productos?")) {
 
@@ -167,23 +191,21 @@ function registrarVenta(nombreUsuario, pPolera, pPantalon, pZapatillas, pLentes)
 
     let precio = 0;
 
-
-
     switch (codigoProducto) {
       case 1:
-        precio = pPolera;
+        precio = precioPolera;
         break;
 
       case 2:
-        precio = pPantalon;
+        precio = precioPantalon;
 
         break;
       case 3:
-        precio = pZapatillas;
+        precio = precioZapatillas;
         break;
 
       case 4:
-        precio = pLentes;
+        precio = precioLentes;
         break;
       default:
 
@@ -197,29 +219,42 @@ function registrarVenta(nombreUsuario, pPolera, pPantalon, pZapatillas, pLentes)
     }
   }
 
-
   alert("Gracias " + nombreUsuario + ". El total a pagar es: $" + subtotal);
   imprimirVenta(rutCliente, cantidadProductos, subtotal);
 }
 
+let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombre);
+if (acceso) {
 
+let opcion = "" ;
 
-if (opcion == "1") {
-  let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombre);
-  if (acceso) {
-    calcularDescuento(nombre);
-  }
-} else if (opcion == "2") {
-  let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombre);
+while (opcion !== "4") {
+opcion = prompt("¿Qué te gustaría hacer? | 1 - Calcular descuento | 2 - Ingresar a caja | 3 - Gestionar productos | 4 - Salir del sistema");
+  switch (opcion) {
+    case "1":
+      if (acceso) {
 
+  calcularDescuento(nombre);
+  break;
+}
+case "2":
   if (acceso) {
-    registrarVenta(nombre, precioPolera, precioPantalon, precioZapatillas, precioLentes);
+  registrarVenta(nombre, precioPolera, precioPantalon, precioZapatillas, precioLentes);
   }
-} else if (opcion == "3") {
-  let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombre);
-  if (acceso) {
-    gestionarInventario(nombre);
-  }
+  break;
+case "3":
+if (acceso) {
+  gestionarProductos(productos);
+}
+break;
+case "4":
+  alert("¡Gracias por usar el sistema! Hasta luego.");
+  break;
+
+default:
+  alert("Opción inválida. Por favor, ingresa una opción válida.");
+}
+}
 } else {
-  alert("Opción no válida.");
+  alert("No se pudo acceder al sistema. Intenta nuevamente más tarde.");
 }
