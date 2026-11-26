@@ -1,121 +1,125 @@
-console.log("Sistema de ventas y gestión de productos de moda");
+console.log("Viora Sunglasses - Sistema de Gestión de anteojos y Ventas");
 
-const nombre = prompt("¡Hola! Ingresa tu nombre para comenzar:");
-let precioPolera = 25000;
-let precioPantalon = 40000;
-let precioZapatillas = 60000;
-let precioLentes = 15000;
+const nombreUsuario = prompt("¡Hola! Ingresa tu nombre para comenzar:");
 const claveSecreta = "js123";
 const intentosMaximos = 3;
 let total = 0;
-const productos = ["polera", "pantalón", "zapatillas", "lentes", "sombrero"];
+
 const pesoArg = 1.58;
 
-class Producto {
+class anteojo {
   static codigoBarra = 0;
-  constructor(nombreProducto, tipo, precio, stock, talla, color) {
-    this.id = ++Producto.codigoBarra;
-    this.nombreProducto = nombreProducto;
-    this.tipo = tipo;
+  constructor(modelo, material, precio, stock, talla, color, cristal, forma) {
+    this.id = ++anteojo.codigoBarra;
+    this.modelo = modelo;
+    this.material = material;
     this.precio = precio;
     this.stock = stock;
     this.talla = talla;
     this.color = color;
+    this.cristal = cristal;
+    this.forma = forma;
   }
   enPesosArg = () => {
     this.precio = this.precio * pesoArg;
-    console.log(`El precio de ${this.tipo} en pesos Argentinos es: $${this.precio}`);
+    console.log("El precio de ${this.material} en pesos Argentinos es: $${this.precio}");
   }
 }
+const anteojo1 = new anteojo ("Astro", "Acetato", 25000, 10, "M", "Negro", "Estandar", "Ovalado");
+ const anteojo2 = new anteojo ("Styles", "Acetato", 40000, 5, "L", "Tortoise", "estandar", "Rectangular");
+const anteojo3 = new anteojo ("Devon", "Metal", 60000, 8, "42", "Blanco", "Polarizado", "Ovalado");
 
-const producto1 = new Producto("Sombrero", "Accesorio", 25000, 10, "M", "Negro");
-const producto2 = new Producto("Aretes", "Accesorio", 40000, 5, "L", "Dorado");
-const producto3 = new Producto("Tacones", "Zapatos", 60000, 8, "42", "Blanco");
-producto1.enPesosArg();
-producto2.enPesosArg();
-console.log(producto1, producto2, producto3);
+const listaAnteojos = [anteojo1, anteojo2, anteojo3];
 
-function mostrarListaProductos(productos) {
-  alert("Stock de productos:\n" + productos.join("\n"));
-  for (const producto of productos) {
-    console.log("Producto: " + producto);
-  }
+function mostrarListaAnteojos(listaAnteojos) {
+  const mostrar= listaAnteojos.map((anteojo) => anteojo.modelo + ", Stock: " + anteojo.stock + "\n").join("");
+  alert(listaAnteojos.length + " Anteojos disponibles: \n" + mostrar)
 }
 
-const cargarProducto = (productos) => {
-  const nombreProducto = prompt("Ingresa el nombre del producto:");
-  const tipo = prompt("Ingresa el tipo de producto:");
-  const precio = parseFloat(prompt("Ingresa el precio del producto:"));
+const cargarAnteojo = (listaAnteojos) => {
+  const modelo = prompt("Ingresa el nombre del modelo del anteojo:");
+  const material = prompt("Ingresa el material de anteojo:");
+  const precio = parseFloat(prompt("Ingresa el precio del anteojo:"));
   const stock = parseInt(prompt("Ingresa la cantidad en stock:"));
-  const talla = prompt("Ingresa la talla del producto:");
-  const color = prompt("Ingresa el color del producto:");
-  const nuevoProducto = new Producto(nombreProducto, tipo, precio, stock, talla, color);
+  const talla = prompt("Ingresa la talla del anteojo:");
+  const color = prompt("Ingresa el color del anteojo:");
+  const cristal = prompt("Ingresa el tipo de cristal del anteojo:");
+  const forma = prompt("Ingresa la forma del anteojo:");
+  const nuevoAnteojo = new anteojo(modelo, material, precio, stock, talla, color, cristal, forma);
   const ubicacion = Number(prompt("¿Dónde deseas agregarlo? | 1 - Al inicio | 2 - Al final | 3 - En una posición específica"));
-  if (ubicacion === 1) {
-    productos.unshift(nuevoProducto.tipo.toLowerCase());
-  } else if (ubicacion === 2) {
-    productos.push(nuevoProducto.tipo.toLowerCase());
-  } else if (ubicacion === 3) {
-    const posicion = Number(prompt("Ingresa la posición (0 a " + productos.length + ") donde deseas agregar el producto:"));
-    const opcionReemplazo = parseInt(prompt("¿Deseas reemplazar el producto existente en esa posición? (1- Sí / 2 - NO)"));
 
-    if (posicion >= 0 && posicion <= productos.length && opcionReemplazo === 1) {
-      productos.splice(posicion, 1, nuevoProducto.tipo.toLowerCase());
-    } else if (posicion >= 0 && posicion <= productos.length && opcionReemplazo === 2) {
-      productos.splice(posicion, 0, nuevoProducto.tipo.toLowerCase());
+  if (ubicacion === 1) {
+    listaAnteojos.unshift(nuevoAnteojo);
+  } else if (ubicacion === 2) {
+    listaAnteojos.push(nuevoAnteojo);
+  } else if (ubicacion === 3) {
+    const posicion = Number(prompt("Ingresa la posición (0 a " + listaAnteojos.length + ") donde deseas agregar el anteojo:"));
+    const opcionReemplazo = parseInt(prompt("¿Deseas reemplazar el anteojo existente en esa posición? (1- Sí / 2 - NO)"));
+
+    if (posicion >= 0 && posicion <= listaAnteojos.length && opcionReemplazo === 1) {
+      listaAnteojos.splice(posicion, 1, nuevoAnteojo);
+    } else if (posicion >= 0 && posicion <= listaAnteojos.length && opcionReemplazo === 2) {
+      listaAnteojos.splice(posicion, 0, nuevoAnteojo);
     } else {
-      alert("Posición inválida. El producto se agregará al final.");
-      productos.push(nuevoProducto.tipo.toLowerCase());
+      alert("Posición inválida. El anteojo se agregará al final.");
+      listaAnteojos.push(nuevoAnteojo);
     }
   }
 
-  alert(`Producto cargado:\nID: ${nuevoProducto.id}\nTipo: ${nuevoProducto.tipo}\nPrecio: $${nuevoProducto.precio}\nStock: ${nuevoProducto.stock}\nTalla: ${nuevoProducto.talla}\nColor: ${nuevoProducto.color}`);
-  alert("Lista de productos actualizada: " + productos.join(", "));
+  alert("anteojo cargado:\nID: " + nuevoAnteojo.id + "\nModelo: " + nuevoAnteojo.modelo + "\nMaterial: " + nuevoAnteojo.material + "\nPrecio: $" + nuevoAnteojo.precio + "\nStock: " + nuevoAnteojo.stock + "\nTalla: " + nuevoAnteojo.talla + "\nColor: " + nuevoAnteojo.color + "\nCristal: " + nuevoAnteojo.cristal + "\nForma: " + nuevoAnteojo.forma);
+  alert("Lista de anteojos actualizada ");
 }
 
-function eliminarProducto(productos) {
-  const productoEliminar = prompt("Escribe el producto a eliminar:\n" + productos.join("\n"));
-  if (!productoEliminar) return;
+function eliminaranteojo(anteojos) {
+  const nombresModelos = anteojos.map((item) => item.modelo);
+  const anteojoEliminar = prompt("Escribe el modelo del anteojo a eliminar:\n" + nombresModelos.join("\n"));
+  if (!anteojoEliminar) return;
 
-  const indexEliminar = productos.indexOf(productoEliminar.trim().toLowerCase());
+  const termino = anteojoEliminar.trim().toLowerCase();
+  const indexEliminar = anteojos.findIndex(
+    (item) => item.modelo.toLowerCase() === termino
+  );
 
   if (indexEliminar !== -1) {
-    productos.splice(indexEliminar, 1);
-    alert("Producto eliminado: " + productoEliminar.trim());
-    alert("Lista de productos actualizada: " + productos.join(", "));
+    const eliminado = anteojos.splice(indexEliminar, 1);
+    alert("Anteojo eliminado: " + eliminado[0].modelo);
+    alert("Lista de anteojos actualizada: " + anteojos.map((item) => item.modelo).join(", "));
   } else {
-    alert("El producto ingresado no se encuentra en la lista.");
+    alert("El anteojo ingresado no se encuentra en la lista.");
   }
 }
 
-function buscarProducto(productos) {
-  const productoBuscar = prompt("Escribe el producto a buscar:");
-  if (!productoBuscar) return;
+function buscaranteojo(anteojos) {
+  const anteojoBuscar = prompt("Escribe el modelo del anteojo a buscar:");
+  if (!anteojoBuscar) return;
 
-  const termino = productoBuscar.trim().toLowerCase();
-  if (productos.includes(termino)) {
-    const posicionBuscar = productos.indexOf(termino);
-    alert("El producto '" + productoBuscar.trim() + "' se encuentra en la posición: " + posicionBuscar);
+  const termino = anteojoBuscar.trim().toLowerCase();
+  const posicionBuscar = anteojos.findIndex(
+    (item) => item.modelo.toLowerCase() === termino
+  );
+
+  if (posicionBuscar !== -1) {
+    alert("El anteojo '" + anteojoBuscar.trim() + "' se encuentra en la posición: " + posicionBuscar);
   } else {
-    alert("El producto ingresado no se encuentra en la lista.");
+    alert("El anteojo ingresado no se encuentra en la lista.");
   }
 }
 
-function gestionarProductos(productos) {
-  const opcionGestion = Number(prompt("¿Qué deseas hacer? | 1 - Agregar producto | 2 - Eliminar producto | 3 - Buscar producto | 4 - Ver lista de productos"));
+function gestionarAnteojos(anteojos) {
+  const opcionGestion = Number(prompt("¿Qué deseas hacer? | 1 - Agregar anteojo | 2 - Eliminar anteojo | 3 - Buscar anteojo | 4 - Ver lista de anteojos"));
 
   switch (opcionGestion) {
     case 1:
-      cargarProducto(productos);
+      cargarAnteojo(anteojos);
       break;
     case 2:
-      eliminarProducto(productos);
+      eliminaranteojo(anteojos);
       break;
     case 3:
-      buscarProducto(productos);
+      buscaranteojo(anteojos);
       break;
     case 4:
-      mostrarListaProductos(productos);
+      mostrarListaAnteojos(anteojos);
       break;
     default:
       alert("La opción ingresada no es válida.");
@@ -126,15 +130,16 @@ function imprimirDescuento(nombreCliente, precio, descuento, precioFinal) {
   console.log("Datos:");
   console.log("Nombre: " + nombreCliente);
   console.log("Precio: $" + precio);
-  console.log("Dcto: " + descuento + "%");
+  console.log("Dcto: $" + descuento);
   console.log("Total: $" + precioFinal);
 }
 
-function imprimirVenta(rut, cantidad, totalPagar) {
+function imprimirVenta(rut, cantidad, totalPagar, subtotal, nombreUsuario, carrito) {
   console.log("Datos de cliente:");
   console.log("Rut: " + rut);
-  console.log("Productos: " + cantidad);
+  console.log("anteojos: " + cantidad);
   console.log("El total a pagar es: $" + totalPagar);
+  alert("Gracias " + nombreUsuario + ". El total a pagar es: $" + subtotal);
 }
 
 function autenticarUsuario(claveCorrecta, maxIntentos, nombreUsuario) {
@@ -160,82 +165,120 @@ function autenticarUsuario(claveCorrecta, maxIntentos, nombreUsuario) {
   return accesoConcedido;
 }
 
-function calcularDescuento(nombreUsuario) {
-  let cantidadProductos = parseInt(prompt("¡Perfecto! ¿Cuántos productos deseas calcular?"));
 
-  if (cantidadProductos > 0) {
-    for (let i = 1; i <= cantidadProductos; i++) {
-      let precio = Number(prompt("Ingresa el precio del producto " + i + ":"));
-      let descuento = parseFloat(prompt("Ingresa el porcentaje de descuento (sin %) para el producto " + i + ":"));
-      let sPorcentaje = calcularMontoDescuento(precio, descuento);
-      let precioFinal = precio - sPorcentaje;
+  function calcularDescuento(nombreUsuario) {
+  const seleccion = [];
 
-      alert(nombreUsuario + ", el precio con " + descuento + "% de descuento para el producto " + i + " es: $" + precioFinal);
-      imprimirDescuento(nombreUsuario, precio, descuento, precioFinal);
+  while (confirm("¿Agregar anteojos para simular descuento?")) {
+    const listaCodigos = listaAnteojos.map(
+      (anteojo) => anteojo.id + " - " + anteojo.modelo + " (" + anteojo.material + ") - $" + anteojo.precio
+    );
+    const codigoIngresado = parseInt(
+      prompt("Escribe el código del anteojo:\n" + listaCodigos.join("\n"))
+    );
+    const anteojoEncontrado = listaAnteojos.find(
+      (anteojo) => anteojo.id === codigoIngresado
+    );
+
+    if (anteojoEncontrado) {
+      seleccion.push(anteojoEncontrado);
+      alert("Agregado: " + anteojoEncontrado.modelo);
+    } else {
+      alert("Código de anteojo inválido.");
     }
-  } else {
-    alert("Ingresaste una cantidad inválida de productos.");
   }
+
+  if (seleccion.length === 0) {
+    alert("No seleccionaste anteojos para calcular descuento.");
+    return;
+  }
+
+  let totalOriginal = 0;
+  let totalDescuento = 0;
+
+  for (let i = 0; i < seleccion.length; i++) {
+    const item = seleccion[i];
+    totalOriginal = totalOriginal + item.precio;
+
+    const mismosModelos = seleccion.filter(
+      (prod) => prod.modelo.toLowerCase() === item.modelo.toLowerCase()
+    );
+    const mismosMateriales = seleccion.filter(
+      (prod) => prod.material.toLowerCase() === item.material.toLowerCase()
+    );
+
+    let porcentaje = 0;
+    if (mismosModelos.length >= 2) {
+      porcentaje = 15;
+    } else if (mismosMateriales.length >= 2) {
+      porcentaje = 10;
+    }
+
+    if (porcentaje > 0) {
+      totalDescuento = totalDescuento + calcularMontoDescuento(item.precio, porcentaje);
+    }
+  }
+
+  const precioFinal = totalOriginal - totalDescuento;
+  alert(
+    nombreUsuario + ", subtotal: $" + totalOriginal +" | Descuento: $" + totalDescuento + " | Total con descuento: $" + precioFinal
+  );
+  imprimirDescuento(nombreUsuario, totalOriginal, totalDescuento, precioFinal);
 }
+
 
 const calcularMontoDescuento = (precioOriginal, porcentajeDcto) => {
   return (porcentajeDcto / 100) * precioOriginal;
 };
 
-function registrarVenta(nombreUsuario, precioPolera, precioPantalon, precioZapatillas, precioLentes) {
+function registrarVenta(listaAnteojos) {
   const rutCliente = prompt("Ingresa RUT del cliente sin puntos ni guión:");
-
-  let cantidadProductos = 0;
+  const carrito = [];
+  let cantidadanteojos = 0;
   let subtotal = 0;
 
-  while (confirm("¿Agregar productos?")) {
-    let codigoProducto = parseInt(prompt("Ingresa el código del producto: (1) Polera (2) Pantalón (3) Zapatillas (4) Lentes"));
-    let precio = 0;
+  while (confirm("¿Agregar anteojos?")) {
+  const listaCodigos = listaAnteojos.map((anteojo) => anteojo.id + " - "+ anteojo.modelo + " ($" + anteojo.precio + ")");
+  const codigoIngresado = parseInt(prompt("Escribe el código del anteojo:\n" + listaCodigos.join("\n")));
+  const anteojoEncontrado = listaAnteojos.find((anteojo) => anteojo.id === codigoIngresado);
 
-    switch (codigoProducto) {
-      case 1:
-        precio = precioPolera;
-        break;
-      case 2:
-        precio = precioPantalon;
-        break;
-      case 3:
-        precio = precioZapatillas;
-        break;
-      case 4:
-        precio = precioLentes;
-        break;
-      default:
-        alert("Código de producto inválido.");
-    }
+  if (anteojoEncontrado && anteojoEncontrado.stock > 0) {
 
-    if (precio > 0) {
-      cantidadProductos++;
-      subtotal = subtotal + precio;
-      alert("Producto agregado. Subtotal actual: $" + subtotal);
-    }
+    carrito.push(anteojoEncontrado)
+    anteojoEncontrado.stock = anteojoEncontrado.stock -1
+    cantidadanteojos= carrito.length
+
+    subtotal = carrito.reduce((acumulador, item) => acumulador + item.precio, 0);
+
+    alert("Anteojo agregado: " + anteojoEncontrado.modelo + ". Subtotal actual: $" + subtotal);
+  } else if (anteojoEncontrado && anteojoEncontrado.stock === 0) {
+    alert("El codigo seleccionado no tiene stock")
+    
+  }else {
+    alert("Código de anteojo inválido.");
   }
-  
-  alert("Gracias " + nombreUsuario + ". El total a pagar es: $" + subtotal);
-  imprimirVenta(rutCliente, cantidadProductos, subtotal);
+
 }
 
-let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombre);
+imprimirVenta(rutCliente, cantidadanteojos, subtotal, subtotal, nombreUsuario, carrito);
+}
+
+let acceso = autenticarUsuario(claveSecreta, intentosMaximos, nombreUsuario);
 
 if (acceso) {
   let opcion = "";
 
   while (opcion !== "4") {
-    opcion = prompt("¿Qué te gustaría hacer? | 1 - Calcular descuento | 2 - Ingresar a caja | 3 - Gestionar productos | 4 - Salir del sistema");
+    opcion = prompt("¿Qué te gustaría hacer? | 1 - Calcular descuento | 2 - Ingresar a caja | 3 - Gestionar anteojos | 4 - Salir del sistema");
     switch (opcion) {
       case "1":
-        calcularDescuento(nombre);
+        calcularDescuento(nombreUsuario);
         break;
       case "2":
-        registrarVenta(nombre, precioPolera, precioPantalon, precioZapatillas, precioLentes);
+        registrarVenta(listaAnteojos);
         break;
       case "3":
-        gestionarProductos(productos);
+        gestionarAnteojos(listaAnteojos);
         break;
       case "4":
         alert("¡Gracias por usar el sistema! Hasta luego.");
